@@ -18,6 +18,9 @@ app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 app.use("/api/auth", userRoutes);
 app.use("/api/property", propertyRoutes);
 app.use("/api/message", messageRoutes);
