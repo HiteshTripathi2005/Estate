@@ -118,18 +118,15 @@ export const userUpdate = async (req, res) => {
 
     // Handle profile picture update
     if (req.file) {
-      const b64 = Buffer.from(req.file.buffer).toString("base64");
-      let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+      const { destination, filename } = req.file;
+      const path = `${destination}${filename}`;
+      const imgurl = await uploadImage(path);
 
-      const uploadResponse = await cloudinary.uploader.upload(dataURI, {
-        resource_type: "auto",
-      });
-
-      if (!uploadResponse.secure_url) {
+      if (!imgurl) {
         return res.status(400).json({ message: "Error uploading image" });
       }
 
-      updateData.profilePic = uploadResponse.secure_url;
+      updateData.profilePic = imgurl;
     }
 
     // Handle username update
