@@ -10,12 +10,18 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import Location from "./Location";
 import Features from "./Features";
 import { motion } from "framer-motion";
+import useMessageStore from "../../store/message.store";
 
 const InfoMain = () => {
   const { getPropertyInfo, info, infoLoading } = usePropertyStore();
+  const { addFriends } = useMessageStore();
   const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
+
+  const handelButtonClick = (id) => {
+    addFriends(id, navigate);
+  };
 
   useEffect(() => {
     getPropertyInfo(id);
@@ -155,6 +161,14 @@ const InfoMain = () => {
           <p className="text-2xl sm:text-3xl font-bold text-blue-600">
             ₹{info?.price?.toLocaleString()}
           </p>
+          <button className="px-3 py-1 bg-blue-600 text-white rounded-full shadow-sm hover:bg-blue-700 transition-colors">
+            <span
+              className="text-xl max-sm:text-sm underline"
+              onClick={() => handelButtonClick(info.owner)}
+            >
+              Contact
+            </span>
+          </button>
         </div>
 
         <p className="text-gray-600 text-base sm:text-lg leading-relaxed">

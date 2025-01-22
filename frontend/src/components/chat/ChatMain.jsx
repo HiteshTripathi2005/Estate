@@ -57,10 +57,20 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
     >
       {/* Chat Header */}
       <div className="sticky top-0 z-10">
-        <MessageHeader
-          setShowSlider={setShowSlider}
-          selectedUser={selectedUser}
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedUser?.friend?._id}
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <MessageHeader
+              setShowSlider={setShowSlider}
+              selectedUser={selectedUser}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Chat Messages */}

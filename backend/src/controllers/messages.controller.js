@@ -2,14 +2,18 @@ import Message from "../models/message.model.js";
 import Friend from "./../models/friend.model.js";
 
 export const setFriendship = async (req, res) => {
-  const { _id: userId } = req.user;
-  const { id: friendId } = req.params;
-  console.log("userId: ", userId);
-
-  if (!friendId) {
-    return res.status(400).json({ message: "Friend id is required" });
-  }
   try {
+    const { _id: userId } = req.user;
+    const { id: friendId } = req.params;
+
+    if (!friendId) {
+      return res.status(400).json({ message: "Friend id is required" });
+    }
+
+    if (userId == friendId) {
+      return res.status(400).json({ message: "This is your own property." });
+    }
+
     const response = await Friend.find({
       $or: [
         {
@@ -23,23 +27,21 @@ export const setFriendship = async (req, res) => {
       ],
     });
 
-    if (response.length == 0) {
+    if (!response.length == 0) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Friendship already exists", data: response });
     }
 
-    const friend = new Friend({
+    const friend = await Friend.create({
       user: userId,
       friend: friendId,
     });
-    await friend.save();
 
-    const friend2 = new Friend({
+    await Friend.create({
       user: friendId,
       friend: userId,
     });
-    await friend2.save();
 
     return res
       .status(200)

@@ -5,16 +5,16 @@ import instance from "../utils/axios";
 export const useAuthStore = create((set) => ({
   fetchingUser: false,
   user: null,
-  isLoading: true,
+  isLoading: false,
   updatingUser: false,
   savingUser: false,
 
   fetchUser: async () => {
     try {
+      set({ isLoading: true });
       const response = await instance.post("/auth/getuser");
       set({ user: response.data.data, isLoading: false });
     } catch (error) {
-      console.error("Error in fetchUser: ", error);
       set({ isLoading: false });
     }
   },

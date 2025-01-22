@@ -11,7 +11,6 @@ const useMessageStore = create((set, get) => ({
     try {
       set({ isLoading: true });
       const res = await instance.get("/message/getfriends");
-      console.log(res.data.data);
       set({ sliderUsers: res.data.data || [] });
     } catch (error) {
       console.error("Error in fetchUser: ", error);
@@ -47,6 +46,17 @@ const useMessageStore = create((set, get) => ({
     } catch (error) {
       console.error("Error in sendMessage: ", error);
       toast.error(error?.response?.data?.message || "could not send message");
+    }
+  },
+
+  addFriends: async (id, navigate) => {
+    try {
+      if (!id) return;
+      await instance.post(`/message/setfriend/${id}`);
+      navigate("/chat");
+    } catch (error) {
+      console.error("Error in addFriends: ", error);
+      toast.error(error?.response?.data?.message || "could not add friend");
     }
   },
 }));
