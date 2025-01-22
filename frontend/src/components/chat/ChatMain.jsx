@@ -60,6 +60,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
         <MessageHeader
           setShowSlider={setShowSlider}
           selectedUser={selectedUser}
+          isLoading={isLoading}
         />
       </div>
 
