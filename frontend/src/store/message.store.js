@@ -6,6 +6,7 @@ const useMessageStore = create((set, get) => ({
   sliderUsers: [],
   messages: [],
   isLoading: false,
+  messageLoading: false,
 
   getSliderUsers: async () => {
     try {
@@ -24,11 +25,14 @@ const useMessageStore = create((set, get) => ({
   getMessages: async (id) => {
     try {
       if (!id) return;
+      set({ messageLoading: true });
       const res = await instance.get(`/message/getmessages/${id}`);
       set({ messages: res.data.data || [] });
     } catch (error) {
       console.error("Error in getMessages: ", error);
       toast.error(error?.response?.data?.message || "could not fetch messages");
+    } finally {
+      set({ messageLoading: false });
     }
   },
 

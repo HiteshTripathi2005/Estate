@@ -7,24 +7,33 @@ import { motion } from "framer-motion";
 
 const ChatMain = ({ setShowSlider, selectedUser }) => {
   const { user } = useAuthStore();
-  const { getMessages, messages, isLoading } = useMessageStore();
+  const { getMessages, messages, isLoading, messageLoading } =
+    useMessageStore();
   const currentUserId = user._id;
   const messagesContainerRef = useRef(null);
 
   const LoadingSkeleton = () => (
-    <div className="animate-pulse space-y-6">
-      {[...Array(5)].map((_, i) => (
-        <div
+    <div className="animate-pulse space-y-4">
+      {[...Array(6)].map((_, i) => (
+        <motion.div
           key={i}
-          className={`w-fit p-3 mb-2 h-20 ${
-            i % 2 === 0
-              ? "ml-auto bg-gray-200 rounded-tl-lg rounded-bl-lg rounded-tr-sm w-[80%]"
-              : "mr-auto bg-gray-100 rounded-tr-lg rounded-br-lg rounded-tl-sm w-[60%]"
-          }`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: i * 0.1 }}
+          className={`flex ${i % 2 === 0 ? "justify-end" : "justify-start"}`}
         >
-          <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-          <div className="h-3 bg-gray-300 rounded w-1/4"></div>
-        </div>
+          <div
+            className={`w-fit p-4 rounded-lg ${
+              i % 2 === 0
+                ? "ml-auto bg-gray-200 w-[60%]"
+                : "mr-auto bg-gray-100 w-[70%]"
+            }`}
+          >
+            <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+            <div className="h-3 bg-gray-300 rounded w-1/2 mb-1"></div>
+            <div className="h-2 bg-gray-300 rounded w-1/4"></div>
+          </div>
+        </motion.div>
       ))}
     </div>
   );
@@ -69,7 +78,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-6 pb-24"
       >
-        {isLoading ? (
+        {messageLoading ? (
           <LoadingSkeleton />
         ) : messages.length === 0 ? (
           <motion.div
