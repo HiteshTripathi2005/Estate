@@ -6,7 +6,7 @@ const useMessageStore = create((set, get) => ({
   sliderUsers: [],
   messages: [],
   isLoading: false,
-  messageLoading: true,
+  messageLoading: false,
 
   getSliderUsers: async () => {
     try {
@@ -25,6 +25,7 @@ const useMessageStore = create((set, get) => ({
   getMessages: async (id) => {
     try {
       if (!id) return;
+      set({ messageLoading: true });
       const res = await instance.get(`/message/getmessages/${id}`);
       set({ messages: res.data.data || [] });
     } catch (error) {
