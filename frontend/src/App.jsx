@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
@@ -15,10 +15,24 @@ import Chat from "./pages/Chat";
 import SyncLoader from "react-spinners/esm/SyncLoader";
 
 const App = () => {
-  const { user, fetchUser, isLoading } = useAuthStore();
+  const { user, fetchUser } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   useEffect(() => {
-    fetchUser();
+    const initializeApp = async () => {
+      try {
+        setIsLoading(true);
+        await fetchUser();
+        setIsDataFetched(true);
+      } catch (error) {
+        console.error("Error fetching user", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeApp();
   }, [fetchUser]);
 
   if (isLoading)
@@ -29,6 +43,10 @@ const App = () => {
         </div>
       </div>
     );
+
+  if (!isDataFetched) {
+    return null;
+  }
 
   return (
     <div>
