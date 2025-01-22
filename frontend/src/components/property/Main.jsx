@@ -34,10 +34,6 @@ const Main = () => {
     setFilteredProperties(filtered);
   }, [property, locationFilter, statusFilter]);
 
-  const handelClick = async () => {
-    console.log("clicked: " + item._id);
-  };
-
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -55,7 +51,7 @@ const Main = () => {
 
   const LoadingSkeleton = () => (
     <div className="animate-pulse grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {[1, 2, 3].map((n) => (
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((n) => (
         <div key={n} className="bg-white rounded-2xl shadow-lg h-[400px]">
           <div className="h-64 bg-gray-200 rounded-t-2xl" />
           <div className="p-6 space-y-3">
