@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import { useAuthStore } from "../../store/auth.store";
+import { motion } from "framer-motion";
 
 const PersonalInfo = () => {
   const { user, updateUser, updatingUser, logout } = useAuthStore();
@@ -26,12 +27,30 @@ const PersonalInfo = () => {
   };
 
   return (
-    <div className="flex-1 bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
-      <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
+      className="flex-1 bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-all"
+    >
+      <motion.h2
+        initial={{ y: -10 }}
+        animate={{ y: 0 }}
+        className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6"
+      >
         Personal Information
-      </h2>
-      <form className="flex flex-col gap-4">
-        <div className="flex flex-col items-center">
+      </motion.h2>
+      <motion.form
+        initial={{ y: 20 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="flex flex-col gap-4"
+      >
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+          className="flex flex-col items-center"
+        >
           <div className="relative group">
             <img
               src={
@@ -58,9 +77,14 @@ const PersonalInfo = () => {
               </label>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col gap-2 text-xl max-sm:text-lg">
+        <motion.div
+          initial={{ x: -20 }}
+          animate={{ x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col gap-2 text-xl max-sm:text-lg"
+        >
           <label className="font-semibold text-gray-700">Username</label>
           <input
             type="text"
@@ -70,8 +94,14 @@ const PersonalInfo = () => {
             }
             className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
-        </div>
-        <div className="flex flex-col gap-2 text-xl max-sm:text-lg ">
+        </motion.div>
+
+        <motion.div
+          initial={{ x: -20 }}
+          animate={{ x: 0 }}
+          transition={{ delay: 0.4 }}
+          className="flex flex-col gap-2 text-xl max-sm:text-lg"
+        >
           <label className="font-semibold text-gray-700">Email</label>
           <input
             type="email"
@@ -80,9 +110,15 @@ const PersonalInfo = () => {
             disabled
             className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
-        </div>
-        <div className="flex flex-col gap-2 text-xl max-sm:text-lg ">
-          <label className="font-semibold text-gray-700">Joinde Date</label>
+        </motion.div>
+
+        <motion.div
+          initial={{ x: -20 }}
+          animate={{ x: 0 }}
+          transition={{ delay: 0.5 }}
+          className="flex flex-col gap-2 text-xl max-sm:text-lg"
+        >
+          <label className="font-semibold text-gray-700">Join Date</label>
           <input
             type="text"
             placeholder="joined date"
@@ -90,23 +126,25 @@ const PersonalInfo = () => {
             value={new Date(user.createdAt).toDateString()}
             className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 hover:bg-slate-800 transition-colors mt-6"
           onClick={handleSubmit}
           disabled={updatingUser}
         >
           {updatingUser ? "Updating..." : "Update"}
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
 
       <div className="flex justify-end mt-6 pt-6 border-t">
         <button className="bg-slate-700 text-base text-white p-1 rounded-lg hover:bg-red-600  font-medium transition-colors">
           Delete account
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

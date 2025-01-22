@@ -12,6 +12,7 @@ import Demo from "./pages/Demo";
 import Map from "./pages/Map";
 import PropertyInfo from "./pages/PropertyInfo";
 import Chat from "./pages/Chat";
+import SyncLoader from "react-spinners/esm/SyncLoader";
 
 const App = () => {
   const { user, fetchUser, isLoading } = useAuthStore();
@@ -22,8 +23,10 @@ const App = () => {
 
   if (isLoading)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black">
-        <h1 className="text-white text-5xl">loading...</h1>
+      <div className="min-h-screen flex items-center justify-center">
+        <div>
+          <SyncLoader size={10} />
+        </div>
       </div>
     );
 
@@ -64,6 +67,10 @@ const App = () => {
         />
         <Route
           path="/chat"
+          element={user ? <Chat /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/chat/:id"
           element={user ? <Chat /> : <Navigate to={"/login"} />}
         />
         <Route path="/demo" element={<Demo />} />

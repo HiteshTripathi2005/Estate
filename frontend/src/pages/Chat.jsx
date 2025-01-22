@@ -1,14 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChatMain from "../components/chat/ChatMain";
 import ChatSlider from "./../components/chat/ChatSlider";
 import AuthNavbar from "../components/common/AuthNavbar";
+import useMessageStore from "../store/message.store";
+import SyncLoader from "react-spinners/esm/SyncLoader";
 
 const Chat = () => {
+  const { sliderUsers, getSliderUsers, isLoading } = useMessageStore();
+  const [showSlider, setShowSlider] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  useEffect(() => {
+    getSliderUsers();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <SyncLoader />
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="h-screen overflow-hidden">
       <AuthNavbar />
-      <ChatSlider />
-      {/* <ChatMain /> */}
+      {sliderUsers.length === 0 ? (
+        <div className="flex items-center justify-center h-full">
+          <h1 className="text-2xl">No users to display</h1>
+        </div>
+      ) : (
+        <div className="flex h-[calc(100vh-88px)]">
+          <div className={`md:block ${showSlider ? "block" : "hidden"} h-full`}>
+            <ChatSlider
+              setShowSlider={setShowSlider}
+              setSelectedUser={setSelectedUser}
+            />
+          </div>
+          <div
+            className={`flex-1 ${
+              showSlider ? "hidden" : "block"
+            } md:block h-full`}
+          >
+            <ChatMain
+              setShowSlider={setShowSlider}
+              selectedUser={selectedUser}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

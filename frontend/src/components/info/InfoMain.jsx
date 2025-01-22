@@ -1,4 +1,4 @@
-import { useNavigate, NavLink, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Location from "./Location";
 import Features from "./Features";
+import { motion } from "framer-motion";
 
 const InfoMain = () => {
   const { getPropertyInfo, info, infoLoading } = usePropertyStore();
@@ -27,10 +28,16 @@ const InfoMain = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [id]);
 
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 },
+  };
+
   const renderImageGallery = () => {
     if (isMobile) {
       return (
-        <div>
+        <motion.div {...fadeIn}>
           <div>
             <IoMdArrowRoundBack
               className="size-5 text-blue-600 text-lg"
@@ -57,14 +64,13 @@ const InfoMain = () => {
               ))}
             </Swiper>
           </div>
-        </div>
+        </motion.div>
       );
     }
 
-    // For desktop view
     if (info.images?.length <= 2) {
       return (
-        <div>
+        <motion.div {...fadeIn}>
           <IoMdArrowRoundBack
             className="size-6 mb-4 text-blue-600 text-lg"
             onClick={() => navigate(-1)}
@@ -84,12 +90,12 @@ const InfoMain = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       );
     }
 
     return (
-      <div className="mb-8">
+      <motion.div {...fadeIn} className="mb-8">
         <Swiper
           modules={[Navigation, Pagination]}
           navigation
@@ -108,22 +114,34 @@ const InfoMain = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
+      </motion.div>
     );
   };
 
   if (infoLoading)
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex items-center justify-center min-h-[60vh]"
+      >
         <div className="animate-pulse text-xl font-semibold">Loading...</div>
-      </div>
+      </motion.div>
     );
 
   return (
-    <main className="max-w-6xl mx-auto p-4 lg:p-8">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="max-w-6xl mx-auto p-4 lg:p-8"
+    >
       {renderImageGallery()}
-      {/* Property Details */}
-      <div className="space-y-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="space-y-6"
+      >
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border-b pb-4">
           <h1 className="text-2xl sm:text-4xl font-bold text-gray-800">
             {info.title}
@@ -133,21 +151,21 @@ const InfoMain = () => {
           </span>
         </div>
 
-        <p className="text-2xl sm:text-3xl font-bold text-blue-600">
-          ₹{info?.price?.toLocaleString()}
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+            ₹{info?.price?.toLocaleString()}
+          </p>
+        </div>
 
         <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
           {info.description}
         </p>
 
-        {/* Features */}
         <Features info={info} />
 
-        {/* Location */}
         <Location info={info} />
-      </div>
-    </main>
+      </motion.div>
+    </motion.main>
   );
 };
 

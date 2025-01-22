@@ -1,10 +1,31 @@
 import React from "react";
 import { FaBath, FaBed, FaParking, FaRulerCombined } from "react-icons/fa";
 import { MdChair } from "react-icons/md";
+import { motion } from "framer-motion";
 
 const Features = (props) => {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 py-6 border-t border-b">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="grid grid-cols-2 md:grid-cols-5 gap-4 py-6 border-t border-b"
+    >
       {[
         {
           icon: <FaBed className="text-2xl text-blue-500" />,
@@ -27,15 +48,16 @@ const Features = (props) => {
           label: props.info.features?.furnished ? "Furnished" : "Unfurnished",
         },
       ].map((feature, index) => (
-        <div
+        <motion.div
           key={index}
+          variants={item}
           className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
         >
           {feature.icon}
           <span className="font-medium">{feature.label}</span>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
