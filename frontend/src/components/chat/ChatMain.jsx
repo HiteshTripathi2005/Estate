@@ -3,7 +3,7 @@ import useMessageStore from "../../store/message.store";
 import { useAuthStore } from "../../store/auth.store";
 import MessageInput from "./MessageInput";
 import MessageHeader from "./MessageHeader";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const ChatMain = ({ setShowSlider, selectedUser }) => {
   const { user } = useAuthStore();
@@ -57,20 +57,10 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
     >
       {/* Chat Header */}
       <div className="sticky top-0 z-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedUser?.friend?._id}
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -50, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <MessageHeader
-              setShowSlider={setShowSlider}
-              selectedUser={selectedUser}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <MessageHeader
+          setShowSlider={setShowSlider}
+          selectedUser={selectedUser}
+        />
       </div>
 
       {/* Chat Messages */}
@@ -78,19 +68,23 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-6 pb-24"
       >
-        <AnimatePresence>
-          {isLoading ? (
-            <LoadingSkeleton />
-          ) : messages.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center justify-center h-full"
-            >
-              <h1 className="text-2xl"> No messages yet </h1>
-            </motion.div>
-          ) : (
-            messages.map((message) => (
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : messages.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center justify-center h-full"
+          >
+            <h1 className="text-2xl"> No messages yet </h1>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {messages.map((message) => (
               <motion.div
                 key={`${message._id}`}
                 initial={{
@@ -125,9 +119,9 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
                   {new Date(message.createdAt).toLocaleTimeString()}
                 </div>
               </motion.div>
-            ))
-          )}
-        </AnimatePresence>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       {/* Chat Input */}
