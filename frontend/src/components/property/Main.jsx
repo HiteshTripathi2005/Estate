@@ -77,7 +77,7 @@ const Main = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 mt-10">
+    <div className="min-h-screen bg-gray-50 py-12 mt-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
