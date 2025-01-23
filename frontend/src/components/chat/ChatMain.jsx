@@ -49,7 +49,10 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       </div>
 
       {/* Chat Messages */}
-      <div ref={messagesContainerRef} className="overflow-y-auto p-4 space-y-6">
+      <div
+        ref={messagesContainerRef}
+        className=" overflow-hidden p-4 space-y-6"
+      >
         {messageLoading ? (
           <Skeleton />
         ) : messages.length === 0 ? (
