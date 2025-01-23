@@ -22,10 +22,6 @@ const PersonalInfo = () => {
     updateUser(data);
   };
 
-  const handelLogout = () => {
-    logout();
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -60,7 +56,7 @@ const PersonalInfo = () => {
               alt="profile"
               className="rounded-full h-24 w-24 sm:h-32 sm:w-32 object-cover cursor-pointer transition-transform hover:scale-105"
             />
-            <div className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-md cursor-pointer hover:bg-slate-50 transition-colors">
+            <div className="absolute bottom-0 right-0 pl-[8.5px] pr-[8.5px] pb-[4px] pt-2 bg-white rounded-full shadow-md cursor-pointer hover:bg-slate-50 transition-colors">
               <input
                 type="file"
                 id="avatar"
