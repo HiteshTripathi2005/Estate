@@ -62,10 +62,10 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="absolute top-[94px] left-[400px] max-lg:left-[350px] max-md:left-0 right-0 bottom-0 flex flex-col"
+      className="absolute top-[94px] left-[400px] max-lg:left-[350px] max-md:left-0 right-0 bottom-0 grid grid-rows-[76px_1fr_76px]"
     >
       {/* Chat Header */}
-      <div className="sticky top-0 z-10">
+      <div className="w-full">
         <MessageHeader
           setShowSlider={setShowSlider}
           selectedUser={selectedUser}
@@ -74,10 +74,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       </div>
 
       {/* Chat Messages */}
-      <div
-        ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-6 pb-[75px]"
-      >
+      <div ref={messagesContainerRef} className="overflow-y-auto p-4 space-y-6">
         {messageLoading ? (
           <LoadingSkeleton />
         ) : messages.length === 0 ? (
@@ -135,8 +132,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       </div>
 
       {/* Chat Input */}
-      <div className="fixed bottom-0 left-[400px] max-lg:left-[350px] max-md:left-0 right-0">
-        {" "}
+      <div className="w-full">
         <MessageInput selectedUser={selectedUser} />
       </div>
     </motion.div>
