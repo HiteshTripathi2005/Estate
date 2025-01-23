@@ -4,6 +4,7 @@ import { useAuthStore } from "../../store/auth.store";
 import MessageInput from "./MessageInput";
 import MessageHeader from "./MessageHeader";
 import { motion } from "framer-motion";
+import MessageSkeleton from "./messageSkeleton";
 
 const ChatMain = ({ setShowSlider, selectedUser }) => {
   const { user } = useAuthStore();
@@ -11,32 +12,6 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
     useMessageStore();
   const currentUserId = user._id;
   const messagesContainerRef = useRef(null);
-
-  const LoadingSkeleton = () => (
-    <div className="animate-pulse space-y-4">
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: i * 0.1 }}
-          className={`flex ${i % 2 === 0 ? "justify-end" : "justify-start"}`}
-        >
-          <div
-            className={`w-fit p-4 rounded-lg ${
-              i % 2 === 0
-                ? "ml-auto bg-gray-200 w-[60%]"
-                : "mr-auto bg-gray-100 w-[70%]"
-            }`}
-          >
-            <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-            <div className="h-3 bg-gray-300 rounded w-1/2 mb-1"></div>
-            <div className="h-2 bg-gray-300 rounded w-1/4"></div>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
 
   useEffect(() => {
     getMessages(selectedUser?.friend?._id);
@@ -76,7 +51,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       {/* Chat Messages */}
       <div ref={messagesContainerRef} className="overflow-y-auto p-4 space-y-6">
         {messageLoading ? (
-          <LoadingSkeleton />
+          <MessageSkeleton />
         ) : messages.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
