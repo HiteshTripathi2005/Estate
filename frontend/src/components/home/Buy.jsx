@@ -2,26 +2,13 @@ import React, { useEffect, useState } from "react";
 import instance from "../../utils/axios";
 import { motion } from "framer-motion";
 import usePropertyStore from "./../../store/property.store";
+import { NavLink } from "react-router-dom";
 
 const Buy = () => {
   const { getAllProperties, loading, property } = usePropertyStore();
-  // const [property, setProperty] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [displayCount, setDisplayCount] = useState(
     window.innerWidth >= 1024 ? 8 : 4
   );
-
-  // const propertyres = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const res = await instance.get("/property/getall");
-  //     setProperty(res.data.data);
-  //   } catch (error) {
-  //     console.error("Error fetching properties:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
     getAllProperties();
@@ -85,37 +72,42 @@ const Buy = () => {
                     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
                     key={item._id}
                   >
-                    <div className="relative h-48 sm:h-56">
-                      <img
-                        src={item.images[0]}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h2 className="text-3xl font-semibold text-gray-800 mb-2 truncate">
-                        {item.title}
-                      </h2>
-                      <p className="text-gray-600 text-xl mb-2 underline">
-                        {item.location.city}
-                      </p>
-                      <div className="flex justify-between items-center mb-2">
-                        <p className="text-green-600 font-bold text-xl">
-                          ${item.price?.toLocaleString()}
-                        </p>
-                        <p className="text-white text-lg bg-[#091d35] p-2 rounded-md underline">
-                          {item.status}
-                        </p>
+                    <NavLink to={`/login`}>
+                      <div className="relative h-48 sm:h-56">
+                        <img
+                          src={item.images[0]}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                    </div>
+                      <div className="p-4">
+                        <h2 className="text-3xl font-semibold text-gray-800 mb-2 truncate">
+                          {item.title}
+                        </h2>
+                        <p className="text-gray-600 text-xl mb-2 underline">
+                          {item.location.city}
+                        </p>
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="text-green-600 font-bold text-xl">
+                            ${item.price?.toLocaleString()}
+                          </p>
+                          <p className="text-white text-lg bg-[#091d35] p-2 rounded-md underline">
+                            {item.status}
+                          </p>
+                        </div>
+                      </div>
+                    </NavLink>
                   </motion.div>
                 ))}
           </motion.div>
           {!loading && property.length > displayCount && (
             <div className="text-center mt-6">
-              <button className="text-xl md:text-2xl border-0 py-2 md:py-3 px-4 md:px-6 rounded-2xl bg-[#FF6500] text-white font-bold mt-4 md:mt-6 duration-300 hover:bg-red-700">
+              <NavLink
+                to={"/login"}
+                className="text-xl md:text-2xl border-0 py-2 md:py-3 px-4 md:px-6 rounded-2xl bg-[#FF6500] text-white font-bold mt-4 md:mt-6 duration-300 hover:bg-red-700"
+              >
                 Explorer
-              </button>
+              </NavLink>
             </div>
           )}
         </div>
