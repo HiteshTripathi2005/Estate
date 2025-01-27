@@ -37,7 +37,7 @@ const MessageInput = ({ selectedUser }) => {
           transition={{ type: "spring", stiffness: 300 }}
           type="text"
           placeholder="Type your message..."
-          className="flex-1 border rounded-full px-6 py-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-gray-50 transition-all"
+          className="flex-1 border rounded-full px-6 py-[7px] sm:py-[7px] max-sm:py-[7px] max-sm:text-lg sm:text-xl md:text-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 bg-gray-50 transition-all"
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           value={message}

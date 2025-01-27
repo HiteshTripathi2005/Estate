@@ -1,8 +1,13 @@
 import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "../../store/auth.store";
 
 const MessageHeader = ({ setShowSlider, selectedUser, isLoading }) => {
+  const { onlineUsers } = useAuthStore();
+
+  const online = onlineUsers.includes(selectedUser?.friend?._id);
+
   const HeaderSkeleton = () => (
     <div className="flex items-center">
       <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse"></div>
@@ -41,7 +46,9 @@ const MessageHeader = ({ setShowSlider, selectedUser, isLoading }) => {
               <h3 className="font-semibold">
                 {selectedUser?.friend?.fullName}
               </h3>
-              <p className="text-sm text-green-500">Online</p>
+              <p className={online ? "text-green-500" : "text-gray-500"}>
+                {online ? "Online" : "Offline"}
+              </p>
             </div>
           </motion.div>
         )}
