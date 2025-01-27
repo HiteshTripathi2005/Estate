@@ -1,4 +1,5 @@
 import Message from "../models/message.model.js";
+import { getReceiverSocketId, io } from "../utils/socket.js";
 import Friend from "./../models/friend.model.js";
 
 export const setFriendship = async (req, res) => {
@@ -91,6 +92,12 @@ export const sendMessage = async (req, res) => {
 
     if (!newMessage) {
       return res.status(400).json({ message: "Message not sent" });
+    }
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("message", newMessage);
     }
 
     return res

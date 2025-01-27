@@ -3,16 +3,35 @@ import ChatMain from "../components/chat/ChatMain";
 import ChatSlider from "./../components/chat/ChatSlider";
 import AuthNavbar from "../components/common/AuthNavbar";
 import useMessageStore from "../store/message.store";
+import { useAuthStore } from "../store/auth.store";
 import SyncLoader from "react-spinners/esm/SyncLoader";
 
 const Chat = () => {
-  const { sliderUsers, getSliderUsers, isLoading } = useMessageStore();
+  const {
+    sliderUsers,
+    getSliderUsers,
+    isLoading,
+    subscribeToMessages,
+    unSubscribeToMessages,
+  } = useMessageStore();
+  const { selectedUser, setSelectedUser } = useAuthStore();
   const [showSlider, setShowSlider] = useState(true);
-  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     getSliderUsers();
+    subscribeToMessages();
+
+    return () => {
+      unSubscribeToMessages();
+    };
   }, []);
+
+  useEffect(() => {
+    if (selectedUser) {
+      unSubscribeToMessages(); // Unsubscribe from previous user
+      subscribeToMessages(); // Subscribe to new user
+    }
+  }, [selectedUser]);
 
   if (isLoading) {
     return (

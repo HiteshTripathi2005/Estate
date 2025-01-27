@@ -4,8 +4,9 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/users.routes.js";
 import propertyRoutes from "./routes/property.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import { app } from "./utils/socket.js";
 
-const app = express();
+// const app = express();
 
 app.use(
   cors({

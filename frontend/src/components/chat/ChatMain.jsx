@@ -51,7 +51,7 @@ const ChatMain = ({ setShowSlider, selectedUser }) => {
       {/* Chat Messages */}
       <div
         ref={messagesContainerRef}
-        className=" overflow-hidden p-4 space-y-6"
+        className=" overflow-y-auto overflow-x-hidden p-4 space-y-6"
       >
         {messageLoading ? (
           <Skeleton />

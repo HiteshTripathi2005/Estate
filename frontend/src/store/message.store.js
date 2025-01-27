@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { create } from "zustand";
 import instance from "../utils/axios";
+import { useAuthStore } from "./auth.store";
 
 const useMessageStore = create((set, get) => ({
   sliderUsers: [],
@@ -62,6 +63,27 @@ const useMessageStore = create((set, get) => ({
       console.error("Error in addFriends: ", error);
       toast.error(error?.response?.data?.message || "could not add friend");
     }
+  },
+
+  subscribeToMessages: () => {
+    const socket = useAuthStore.getState().socket;
+
+    const user = useAuthStore.getState().user._id;
+    const receiverId = useAuthStore.getState().selectedUser?.friend?._id;
+
+    socket.on("message", (message) => {
+      if (message.sender !== receiverId) return;
+      if (message.receiver !== user) return;
+
+      set({
+        messages: [...get().messages, message],
+      });
+    });
+  },
+
+  unSubscribeToMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("message");
   },
 }));
 

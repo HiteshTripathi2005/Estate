@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import useMessageStore from "../../store/message.store";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "../../store/auth.store";
 
 const ChatSlider = ({ setShowSlider, setSelectedUser }) => {
+  const { onlineUsers } = useAuthStore();
   const { sliderUsers, isLoading } = useMessageStore();
   const [search, setSearch] = useState("");
 
@@ -71,45 +73,56 @@ const ChatSlider = ({ setShowSlider, setSelectedUser }) => {
           <LoadingSkeleton />
         ) : (
           <AnimatePresence>
-            {sliderUsers.map((user, index) => (
-              <motion.div
-                key={user.friend._id}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -50, opacity: 0 }}
-                transition={{
-                  delay: index * 0.05,
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 20,
-                }}
-                whileHover={{
-                  scale: 0.98,
-                  backgroundColor: "rgba(249, 250, 251, 0.8)",
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="flex items-center p-4 border-b hover:bg-gray-50 cursor-pointer"
-                onClick={() => handelClick(user)}
-              >
-                <div className="relative">
-                  <img
-                    src={user.friend.profilePic}
-                    alt={user.friend.fullName}
-                    className="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
-                  />
-                  <span className="absolute bottom-0 right-0 w-4 h-4 border-2 border-white rounded-full bg-green-500" />
-                </div>
-                <div className="ml-4 flex-1">
-                  <h3 className="font-semibold text-gray-800">
-                    {user.friend.fullName}
-                  </h3>
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    Online
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+            {sliderUsers.map((user, index) => {
+              const isOnline = onlineUsers.includes(user.friend._id);
+              return (
+                <motion.div
+                  key={user.friend._id}
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -50, opacity: 0 }}
+                  transition={{
+                    delay: index * 0.05,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                  }}
+                  whileHover={{
+                    scale: 0.98,
+                    backgroundColor: "rgba(249, 250, 251, 0.8)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center p-4 border-b hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handelClick(user)}
+                >
+                  <div className="relative">
+                    <img
+                      src={user.friend.profilePic}
+                      alt={user.friend.fullName}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
+                    />
+                    <span
+                      className={`absolute bottom-0 right-0 w-4 h-4 border-2 border-white rounded-full ${
+                        isOnline ? "bg-green-500" : "bg-gray-400"
+                      }`}
+                    />
+                  </div>
+                  <div className="ml-4 flex-1">
+                    <h3 className="font-semibold text-gray-800">
+                      {user.friend.fullName}
+                    </h3>
+                    <span className="text-sm text-gray-500 flex items-center gap-1">
+                      <span
+                        className={`w-2 h-2 ${
+                          isOnline ? "bg-green-500" : "bg-gray-400"
+                        } rounded-full`}
+                      ></span>
+                      {isOnline ? "Online" : "Offline"}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         )}
       </div>
