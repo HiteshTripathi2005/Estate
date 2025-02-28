@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuthStore } from "../store/auth.store";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc"; // Add this import
 
 export default function Register() {
   const { savingUser, register } = useAuthStore();
@@ -18,7 +19,6 @@ export default function Register() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setProfilePic(file);
-    //cretae a url
     const url = URL.createObjectURL(file);
     setUrl(url);
   };
@@ -45,17 +45,28 @@ export default function Register() {
     register(sendData);
   };
 
+  const handleGoogleSignUp = () => {
+    // Implement Google sign-up logic here
+    console.log("Google sign-up clicked");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <NavLink to={"/"} className="text-2xl">
-          <FaArrowCircleLeft />
-        </NavLink>
-        <h1 className="text-4xl text-center font-semibold text-gray-800 mb-8">
-          Create Account
-        </h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col items-center gap-2">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4 sm:p-6 md:p-8">
+      <div className="max-w-[450px] w-full space-y-6 bg-white p-6 sm:p-8 md:p-10 rounded-2xl shadow-xl">
+        <div className="relative text-center">
+          <NavLink
+            to="/"
+            className="absolute left-0 top-1/2 -translate-y-1/2 text-xl sm:text-2xl text-slate-700 hover:text-slate-900 transition-colors"
+          >
+            <FaArrowCircleLeft className="size-6" />
+          </NavLink>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">
+            Create Account
+          </h2>
+        </div>
+
+        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+          <div className="flex flex-col items-center gap-2 mb-6">
             <input
               type="file"
               accept="image/*"
@@ -73,64 +84,159 @@ export default function Register() {
                   "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg"
                 }
                 alt="profile"
-                className="w-24 h-24 rounded-full object-cover border-4 border-slate-600"
+                className="w-24 h-24 rounded-full object-cover border-4 border-slate-200 hover:border-slate-300 transition-colors"
               />
-              <span className="text-slate-600 mt-2">
+              <span className="text-sm text-slate-600 mt-2">
                 Choose profile picture
               </span>
             </label>
           </div>
-          <input
-            type="text"
-            placeholder="Username"
-            className="border text-2xl p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent"
-            id="userName"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            placeholder="FullName"
-            className="border text-2xl p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent"
-            id="fullName"
-            onChange={handleChange}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="border text-2xl p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent"
-            id="email"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="border p-3 text-2xl rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent"
-            id="password"
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="border p-3 text-2xl rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent"
-            id="confirmPassword"
-            onChange={handleChange}
-          />
+
+          <div className="space-y-5">
+            <div>
+              <label
+                htmlFor="userName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="userName"
+                onChange={handleChange}
+                className="block w-full px-4 py-3.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-all"
+                placeholder="Enter your username"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                onChange={handleChange}
+                className="block w-full px-4 py-3.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-all"
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                onChange={handleChange}
+                className="block w-full px-4 py-3.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-all"
+                placeholder="name@example.com"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                onChange={handleChange}
+                className="block w-full px-4 py-3.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-all"
+                placeholder="Create a password"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                onChange={handleChange}
+                className="block w-full px-4 py-3.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-slate-500 focus:border-slate-500 transition-all"
+                placeholder="Confirm your password"
+              />
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <button
+              disabled={savingUser}
+              className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {savingUser ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                "Sign Up"
+              )}
+            </button>
+          </div>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-3 bg-white text-gray-500">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
           <button
-            disabled={savingUser}
-            className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 transition duration-200 font-semibold"
+            type="button"
+            onClick={handleGoogleSignUp}
+            className="w-full flex items-center justify-center gap-3 px-4 py-3.5 border-2 border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            {savingUser ? "Loading..." : "Sign Up"}
+            <FcGoogle className="text-xl" />
+            Sign up with Google
           </button>
+
+          <div className="text-center pt-2">
+            <p className="text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
         </form>
-        <div className="flex gap-2 mt-5 justify-center text-gray-600 text-2xl">
-          <p>Already have an account?</p>
-          <Link
-            to="/login"
-            className="text-blue-700 hover:underline font-semibold"
-          >
-            Sign in
-          </Link>
-        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import Property from "../models/property.model.js";
+import { User } from "../models/users.model.js";
 import uploadImage from "../utils/cloudinary.js";
 
 export const uploadProperty = async (req, res) => {
@@ -178,6 +179,72 @@ export const deleteProperty = async (req, res) => {
     res.status(200).json({ message: "Property deleted successfully" });
   } catch (error) {
     console.log("Error deleting property: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const addToWatchlist = async (req, res) => {
+  const userId = req.user._id;
+  const { propertyId } = req.body;
+
+  try {
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    const user = await User.findById(userId);
+    if (user.watchlist.includes(propertyId)) {
+      return res.status(400).json({ message: "Property already in watchlist" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { watchlist: propertyId } },
+      { new: true }
+    ).populate("watchlist");
+
+    res.status(200).json({
+      message: "Property added to watchlist",
+      watchlist: updatedUser.watchlist,
+    });
+  } catch (error) {
+    console.error("Error adding to watchlist: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const removeFromWatchlist = async (req, res) => {
+  const userId = req.user._id;
+  const { propertyId } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { watchlist: propertyId } },
+      { new: true }
+    ).populate("watchlist");
+
+    res.status(200).json({
+      message: "Property removed from watchlist",
+      watchlist: user.watchlist,
+    });
+  } catch (error) {
+    console.error("Error removing from watchlist: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getWatchlist = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const user = await User.findById(userId).populate("watchlist");
+    res.status(200).json({
+      message: "Watchlist fetched successfully",
+      watchlist: user.watchlist,
+    });
+  } catch (error) {
+    console.error("Error fetching watchlist: ", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

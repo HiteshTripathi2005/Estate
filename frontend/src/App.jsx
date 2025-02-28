@@ -13,6 +13,7 @@ import Map from "./pages/Map";
 import PropertyInfo from "./pages/PropertyInfo";
 import Chat from "./pages/Chat";
 import SyncLoader from "react-spinners/esm/SyncLoader";
+import WatchList from "./pages/WatchList";
 
 const App = () => {
   const { user, fetchUser } = useAuthStore();
@@ -90,6 +91,10 @@ const App = () => {
         <Route
           path="/chat/:id"
           element={user ? <Chat /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/watchlist"
+          element={user ? <WatchList /> : <Navigate to={"/login"} />}
         />
         <Route path="/demo" element={<Demo />} />
       </Routes>

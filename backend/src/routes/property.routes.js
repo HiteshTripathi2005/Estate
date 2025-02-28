@@ -1,9 +1,12 @@
 import express from "express";
 import auth from "../middlewares/auth.middleware.js";
 import {
+  addToWatchlist,
   deleteProperty,
   getProperties,
   getPropertyInfo,
+  getWatchlist,
+  removeFromWatchlist,
   updateProperty,
   uploadProperty,
   userProperties,
@@ -18,5 +21,8 @@ router.route("/user-properties").get(auth, userProperties);
 router.route("/info/:id").get(auth, getPropertyInfo);
 router.route("/update/:id").post(auth, updateProperty);
 router.route("/delete/:id").delete(auth, deleteProperty);
+router.route("/watchlist/add").post(auth, addToWatchlist);
+router.route("/watchlist/remove").post(auth, removeFromWatchlist);
+router.route("/watchlist").get(auth, getWatchlist);
 
 export default router;

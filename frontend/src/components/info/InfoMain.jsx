@@ -11,20 +11,41 @@ import Location from "./Location";
 import Features from "./Features";
 import { motion } from "framer-motion";
 import useMessageStore from "../../store/message.store";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useAuthStore } from "../../store/auth.store";
 
 const InfoMain = () => {
-  const { getPropertyInfo, info, infoLoading } = usePropertyStore();
+  const { user } = useAuthStore();
+  const { getPropertyInfo, info, infoLoading, addWatchList, removeWatchList } =
+    usePropertyStore();
   const { addFriends } = useMessageStore();
   const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
   const navigate = useNavigate();
 
   const handelButtonClick = (id) => {
     addFriends(id, navigate);
   };
 
+  const handleWatchlistToggle = () => {
+    setIsInWatchlist(!isInWatchlist);
+
+    if (isInWatchlist) {
+      removeWatchList(id);
+    } else {
+      addWatchList(id);
+    }
+  };
+
   useEffect(() => {
     getPropertyInfo(id);
+
+    function checkIsInWatchlist() {
+      setIsInWatchlist(user?.watchlist?.includes(id));
+    }
+
+    checkIsInWatchlist();
 
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -44,12 +65,6 @@ const InfoMain = () => {
     if (isMobile) {
       return (
         <motion.div {...fadeIn}>
-          <div>
-            <IoMdArrowRoundBack
-              className="size-5 text-blue-600 text-lg"
-              onClick={() => navigate(-1)}
-            />
-          </div>
           <div className="mb-8">
             <Swiper
               modules={[Navigation, Pagination]}
@@ -77,11 +92,6 @@ const InfoMain = () => {
     if (info.images?.length <= 2) {
       return (
         <motion.div {...fadeIn}>
-          <IoMdArrowRoundBack
-            className="size-6 mb-4 text-blue-600 text-lg"
-            onClick={() => navigate(-1)}
-          />
-
           <div className="grid grid-cols-2 gap-6 mb-8">
             {info.images?.map((image, index) => (
               <div
@@ -141,6 +151,10 @@ const InfoMain = () => {
       animate={{ opacity: 1 }}
       className="max-w-6xl mx-auto p-4 lg:p-8"
     >
+      <IoMdArrowRoundBack
+        className="size-7 mb-5 text-blue-600 text-lg"
+        onClick={() => navigate(-1)}
+      />
       {renderImageGallery()}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -161,14 +175,29 @@ const InfoMain = () => {
           <p className="text-2xl sm:text-3xl font-bold text-blue-600">
             ₹{info?.price?.toLocaleString()}
           </p>
-          <button className="px-3 py-1 bg-blue-600 text-white rounded-full shadow-sm hover:bg-blue-700 transition-colors">
-            <span
-              className="text-xl max-sm:text-sm underline"
-              onClick={() => handelButtonClick(info.owner)}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleWatchlistToggle}
+              className=" rounded-full px-[6px] py-[1px] hover:bg-gray-100 transition-colors border-[1px]"
+              title={
+                isInWatchlist ? "Remove from watchlist" : "Add to watchlist"
+              }
             >
-              Contact
-            </span>
-          </button>
+              {isInWatchlist ? (
+                <MdFavorite className="text-red-500 mt-[5px] size-6" />
+              ) : (
+                <MdFavoriteBorder className="text-gray-600 mt-[5px] size-6" />
+              )}
+            </button>
+            <button className="px-3 py-1 bg-blue-600 text-white rounded-full shadow-sm hover:bg-blue-700 transition-colors">
+              <span
+                className="text-xl max-sm:text-sm underline"
+                onClick={() => handelButtonClick(info.owner)}
+              >
+                Contact
+              </span>
+            </button>
+          </div>
         </div>
 
         <p className="text-gray-600 text-base sm:text-lg leading-relaxed">

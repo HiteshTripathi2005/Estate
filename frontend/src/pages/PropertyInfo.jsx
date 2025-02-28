@@ -6,7 +6,7 @@ const PropertyInfo = () => {
   return (
     <div>
       <AuthNavbar />
-      <div className="mt-20">
+      <div className="mt-24">
         <InfoMain />
       </div>
     </div>

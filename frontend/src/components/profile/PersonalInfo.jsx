@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import { useAuthStore } from "../../store/auth.store";
 import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 const PersonalInfo = () => {
-  const { user, updateUser, updatingUser, logout } = useAuthStore();
+  const { user, updateUser, updatingUser } = useAuthStore();
   const [formData, setFormData] = useState({});
 
   const handleSubmit = (e) => {
@@ -88,7 +89,7 @@ const PersonalInfo = () => {
             onChange={(e) =>
               setFormData({ ...formData, userName: e.target.value })
             }
-            className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
+            className="border p-[6px] rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
         </motion.div>
 
@@ -104,7 +105,7 @@ const PersonalInfo = () => {
             placeholder="email"
             value={user.email}
             disabled
-            className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
+            className="border p-[6px] rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
         </motion.div>
 
@@ -120,7 +121,7 @@ const PersonalInfo = () => {
             placeholder="joined date"
             disabled
             value={new Date(user.createdAt).toDateString()}
-            className="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
+            className="border p-[6px] rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600 transition-all text-xl max-sm:text-lg"
           />
         </motion.div>
 
@@ -135,7 +136,12 @@ const PersonalInfo = () => {
         </motion.button>
       </motion.form>
 
-      <div className="flex justify-end mt-6 pt-6 border-t">
+      <div className="flex justify-between mt-6 pt-6 border-t">
+        <NavLink to={"/watchlist"}>
+          <button className="bg-slate-700 text-base text-white p-1 rounded-lg hover:bg-red-600  font-medium transition-colors">
+            Watchlist
+          </button>
+        </NavLink>
         <button className="bg-slate-700 text-base text-white p-1 rounded-lg hover:bg-red-600  font-medium transition-colors">
           Delete account
         </button>

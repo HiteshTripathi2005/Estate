@@ -60,20 +60,20 @@ const Contact = () => {
         <input
           type="text"
           placeholder="Name"
-          className="border p-3 rounded-lg text-2xl"
+          className="border p-[5px] rounded-lg text-2xl"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
         <input
           type="email"
           placeholder="Email"
-          className="border p-3 rounded-lg text-2xl"
+          className="border p-[5px] rounded-lg text-2xl"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         />
         <textarea
           placeholder="Message"
-          className="border p-3 rounded-lg text-2xl"
+          className="border p-[5px] rounded-lg text-2xl"
           rows="5"
           value={formData.message}
           onChange={(e) =>

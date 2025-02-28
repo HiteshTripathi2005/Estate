@@ -110,6 +110,8 @@ export const userUpdate = async (req, res) => {
   try {
     const { userName } = req.body;
     let updateData = {};
+    console.log("updateData");
+    console.log(req.file);
 
     // Check if there's anything to update
     if (!req.file && !userName) {

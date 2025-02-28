@@ -9,6 +9,7 @@ const usePropertyStore = create((set) => ({
   uploading: false,
   infoLoading: false,
   info: [],
+  watchlistedProperties: [],
 
   getAllProperties: async () => {
     try {
@@ -67,6 +68,47 @@ const usePropertyStore = create((set) => ({
       set({ infoLoading: false });
       console.error("Error getting property info:", error);
       toast.error(error.response.data.message || "Error getting property info");
+    }
+  },
+
+  addWatchList: async (id) => {
+    try {
+      const res = await instance.post(`/property/watchlist/add`, {
+        propertyId: id,
+      });
+      console.log(res.data.watchlist);
+      set({ watchlistedProperties: res.data.watchlist });
+      toast.success("Added to watchlist");
+    } catch (error) {
+      console.error("Error adding to watchlist:", error);
+      toast.error(error.response.data.message || "Error adding to watchlist");
+    }
+  },
+
+  removeWatchList: async (id) => {
+    try {
+      const res = await instance.post("/property/watchlist/remove", {
+        propertyId: id,
+      });
+
+      console.log(res.data.watchlist);
+      set({ watchlistedProperties: res.data.watchlist });
+      toast.success("Removed from watchlist");
+    } catch (error) {
+      console.error("Error removing from watchlist:", error);
+      toast.error(
+        error.response.data.message || "Error removing from watchlist"
+      );
+    }
+  },
+
+  getWatchList: async () => {
+    try {
+      const res = await instance.get("/property/watchlist");
+      set({ watchlistedProperties: res.data.watchlist });
+    } catch (error) {
+      console.error("Error getting watchlist:", error);
+      toast.error(error.response.data.message || "Error getting watchlist");
     }
   },
 }));

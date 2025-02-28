@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    watchlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Property",
+      },
+    ],
   },
   {
     timestamps: true,
